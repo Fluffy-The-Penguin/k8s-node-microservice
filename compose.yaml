@@ -1,0 +1,19 @@
+services:
+  meow-api:
+    build: .
+    ports:
+      - "8080:3000"
+    depends_on:
+      - my-cache
+    environment:
+      REDIS_HOST: my-cache
+    restart: always
+
+  my-cache:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis-vault:/data
+
+volumes:
+  redis-vault:

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: meow-deploy
+  name: meow-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: meow-deploy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: meow-deploy
+    spec:
+      containers:
+      - image: fluffythepenguin/meow-app:v2
+        name: meow-app
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: meow-deploy
+  name: meow-deploy
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: meow-deploy
+  type: LoadBalancer
+status:
+  loadBalancer: {}
