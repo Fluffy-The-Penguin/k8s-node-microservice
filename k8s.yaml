@@ -16,7 +16,7 @@ spec:
         app: meow-deploy
     spec:
       containers:
-      - image: fluffythepenguin/meow-app:v2
+      - image: fluffythepenguin/meow-app:v3
         name: meow-app
         resources:
           requests:
