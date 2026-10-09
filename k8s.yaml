@@ -40,6 +40,8 @@ spec:
         envFrom:
           - configMapRef:
               name: app-config
+          - secretRef:
+              name: app-secret
 status: {}
 
 ---
@@ -70,3 +72,12 @@ metadata:
 data:
   APP_COLOR: "blue"
   APP_MODE: "Production"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+stringData:
+  DB_PASSWORD: "meow123"
