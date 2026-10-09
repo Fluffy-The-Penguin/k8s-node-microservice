@@ -37,6 +37,9 @@ spec:
             port: 3000
           initialDelaySeconds: 3
           periodSeconds: 5
+        envFrom:
+          - configMapRef:
+              name: app-config
 status: {}
 
 ---
@@ -57,3 +60,13 @@ spec:
   type: LoadBalancer
 status:
   loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_COLOR: "blue"
+  APP_MODE: "Production"
