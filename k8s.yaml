@@ -9,14 +9,18 @@ spec:
   selector:
     matchLabels:
       app: meow-deploy
-  strategy: {}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
         app: meow-deploy
     spec:
       containers:
-      - image: fluffythepenguin/meow-app:v3
+      - image: fluffythepenguin/meow-app:v5
         name: meow-app
         resources:
           requests:
@@ -42,6 +46,14 @@ spec:
               name: app-config
           - secretRef:
               name: app-secret
+        volumeMounts:
+          - name: log-storage
+            mountPath: /app/logs
+      volumes:
+        - name: log-storage
+          persistentVolumeClaim:
+            claimName: meow-pvc
+
 status: {}
 
 ---
@@ -81,3 +93,37 @@ metadata:
   name: app-secret
 stringData:
   DB_PASSWORD: "meow123"
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: meow-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meow-ingress
+spec:
+  rules:
+    - host: meow.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: meow-deploy
+                port:
+                  number: 80
