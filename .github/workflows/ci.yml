@@ -15,5 +15,5 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u fluffythepenguin --password-stdin
       - name: Build and push to docker
         run: |
-          docker build -t flufftthepenguin/meow-app:v6 .
+          docker build -t fluffythepenguin/meow-app:v6 .
           docker push fluffythepenguin/meow-app:v6
