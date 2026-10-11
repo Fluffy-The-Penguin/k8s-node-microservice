@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+Kind: Application
+metadata:
+  name: meow-app
+  namespace: default
+
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Fluffy-The-Penguin/k8s-node-microservice.git
+    targetRevision: HEAD
+    path: .
+    directory:
+      include: k8s.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
