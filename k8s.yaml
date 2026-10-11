@@ -116,6 +116,7 @@ kind: Ingress
 metadata:
   name: meow-ingress
 spec:
+  ingressClassName: nginx
   rules:
     - host: meow.local
       http:
