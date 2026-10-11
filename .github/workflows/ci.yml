@@ -6,10 +6,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Dependencies
         run: npm install
       - name: Verify JS Syntax
         run: node --check server.js
-      - name: Test Docker build
-        run: docker build -t meow-app:test .
+      - name: Login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u fluffythepenguin --password-stdin
+      - name: Build and push to docker
+        run: |
+          docker build -t flufftthepenguin/meow-app:v6 .
+          docker push fluffythepenguin/meow-app:v6
