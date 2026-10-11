@@ -12,11 +12,11 @@ jobs:
       - name: Verify JS Syntax
         run: node --check server.js
       - name: Build Docker image
-        run: docker build -t fluffythepenguin:meow-app:v${{ github.run_number }}
+        run: docker build -t fluffythepenguin/meow-app:v${{ github.run_number }} .
       - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: fluffythepenguin:meow-app:v${{ github.run_number }}
+          image-ref: fluffythepenguin/meow-app:v${{ github.run_number }}
           severity: CRITICAL
       - name: Login to docker hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u fluffythepenguin --password-stdin
